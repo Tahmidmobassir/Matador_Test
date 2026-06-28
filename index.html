@@ -1015,7 +1015,6 @@ Return ONLY a valid JSON object — no markdown, no backticks, nothing else:
     if (!res.ok) {
       const e = await res.json().catch(() => ({}));
       const msg = e.error?.message || `Error ${res.status}`;
-      if (res.status === 429) throw new Error('Rate limit reached. Wait a moment and try again.');
       throw new Error(msg);
     }
 
