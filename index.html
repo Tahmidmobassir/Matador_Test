@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#C8202A">
+  <title>Doodle Oracle · Matador Stationery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red:       #C8202A;
+      --red-dk:    #9E181F;
+      --red-tint:  #FFF2F2;
+      --text:      #1A1A1A;
+      --text-mid:  #666;
+      --text-soft: #999;
+      --text-faint:#C8C8C8;
+      --border:    #E8E8E8;
+      --border-lt: #F0F0F0;
+      --surf:      #F9F9F9;
+      --surf-2:    #F3F3F3;
+      --font:      'Poppins', sans-serif;
+      --r:         10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: var(--font);
+      background: #fff;
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ── Header ── */
+    .header {
+      background: var(--red);
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+      gap: 12px;
+    }
+    .header-logo svg { height: 20px; width: auto; display: block; }
+    .header-tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      white-space: nowrap;
+    }
+    .header-key-btn {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 6px;
+      padding: 5px 9px;
+      color: rgba(255,255,255,0.75);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 11px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .header-key-btn:hover { background: rgba(255,255,255,0.22); }
+    .header-key-btn svg { width: 12px; height: 12px; }
+
+    /* ── Main layout ── */
+    .main { flex: 1; }
+    .content-wrap { max-width: 480px; margin: 0 auto; padding: 0 20px 60px; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 26px 0 22px;
+      border-bottom: 1px solid var(--border-lt);
+    }
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+    .hero h1 {
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.65;
+    }
+
+    /* ── Mode tabs ── */
+    .mode-tabs {
+      display: flex;
+      background: var(--surf-2);
+      border-radius: 8px;
+      padding: 3px;
+      margin: 22px 0 18px;
+      gap: 2px;
+    }
+    .mode-tab {
+      flex: 1;
+      min-height: 40px;
+      padding: 8px 4px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 400;
+      color: #AAAAAA;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mode-tab svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .mode-tab.active {
+      background: #fff;
+      color: var(--text);
+      font-weight: 500;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* ── Zones ── */
+    .zone { display: none; }
+    .zone.active { display: block; }
+
+    /* ── Drop zone ── */
+    .drop-zone {
+      border: 1.5px dashed var(--border);
+      border-radius: 12px;
+      padding: 38px 20px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--surf);
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .drop-zone:active, .drop-zone.drag-over {
+      border-color: var(--red);
+      background: var(--red-tint);
+    }
+    .drop-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #EFEFEF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      color: #C0C0C0;
+      transition: all 0.15s;
+    }
+    .drop-zone:active .drop-icon, .drop-zone.drag-over .drop-icon {
+      background: var(--red-tint);
+      color: var(--red);
+    }
+    .drop-title { font-size: 14px; font-weight: 500; margin-bottom: 5px; }
+    .drop-sub { font-size: 12px; color: var(--text-faint); }
+
+    /* ── Preview ── */
+    .preview-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surf);
+      position: relative;
+    }
+    .preview-wrap img {
+      display: block;
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+    }
+    .preview-wrap video {
+      display: block;
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      background: #111;
+    }
+    .btn-overlay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 6px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-mid);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-overlay svg { width: 11px; height: 11px; }
+
+    /* ── Camera controls ── */
+    .cam-controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .btn-capture {
+      flex: 1;
+      min-height: 48px;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: var(--text);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-capture svg { width: 18px; height: 18px; }
+    .btn-capture:active { background: #333; }
+    .btn-cancel {
+      min-height: 48px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-soft);
+      cursor: pointer;
+    }
+    .btn-cancel:active { background: var(--surf); }
+
+    /* ── Canvas toolbar ── */
+    .canvas-wrap {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .canvas-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 12px;
+      background: var(--surf);
+      border-bottom: 1px solid var(--border-lt);
+    }
+    .toolbar-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-right: 2px;
+    }
+    .pen-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pen-btn.active { border: 2px solid var(--red); }
+    .pen-dot { border-radius: 50%; background: var(--text); display: block; }
+    .toolbar-sep { width: 1px; height: 18px; background: var(--border); margin: 0 1px; flex-shrink: 0; }
+    .eraser-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      font-family: var(--font);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: all 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .eraser-btn svg { width: 13px; height: 13px; }
+    .eraser-btn.active { border-color: var(--red); background: var(--red-tint); color: var(--red); font-weight: 500; }
+    .clear-btn {
+      margin-left: auto;
+      padding: 5px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border-lt);
+      background: transparent;
+      font-family: var(--font);
+      font-size: 11px;
+      color: var(--text-faint);
+      cursor: pointer;
+    }
+    .clear-btn:hover { color: var(--text-mid); border-color: var(--border); }
+    #draw-canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #fff;
+      cursor: crosshair;
+      touch-action: none;
+    }
+    .draw-hint { font-size: 12px; color: var(--text-faint); text-align: center; margin-top: 10px; }
+
+    /* ── Error ── */
+    .error-msg {
+      margin-top: 14px;
+      padding: 11px 14px;
+      background: var(--red-tint);
+      border: 1px solid #FFCCCC;
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--red);
+    }
+
+    /* ── Analyze CTA ── */
+    .btn-analyze {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 18px;
+      padding: 15px 20px;
+      border-radius: var(--r);
+      border: none;
+      background: #EFEFEF;
+      color: var(--text-faint);
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      cursor: not-allowed;
+      transition: background 0.15s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-analyze svg { width: 16px; height: 16px; }
+    .btn-analyze.ready {
+      background: var(--red);
+      color: #fff;
+      cursor: pointer;
+    }
+    .btn-analyze.ready:active { background: var(--red-dk); }
+
+    /* ── Loading ── */
+    .loading-phase { text-align: center; padding: 64px 0; }
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #F0F0F0;
+      border-top-color: var(--red);
+      margin: 0 auto 20px;
+      animation: spin 0.9s linear infinite;
+    }
+    .loading-msg { font-size: 14px; color: var(--text-soft); }
+
+    /* ── Result ── */
+    .result-phase { padding-top: 22px; }
+    .result-card { border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+    .result-img-wrap { padding: 14px 14px 0; }
+    .result-img-wrap img {
+      display: block;
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .result-body { padding: 18px 20px 22px; }
+    .result-spotted { font-size: 12px; font-style: italic; opacity: 0.55; line-height: 1.5; margin-bottom: 8px; }
+    .result-archetype { font-size: 21px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 12px; }
+    .result-vibes { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .result-vibe { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+    .result-reading { font-size: 14px; line-height: 1.8; margin-bottom: 14px; }
+    .result-bonus { padding: 12px 14px; border-radius: 8px; }
+    .result-bonus-label { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+    .result-bonus-text { font-size: 13px; line-height: 1.65; }
+    .result-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-lt);
+    }
+    .btn-try-again {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--text-soft);
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-try-again svg { width: 13px; height: 13px; }
+    .btn-try-again:hover { color: var(--text); }
+    .brand-stamp { font-size: 9px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); }
+
+    /* ── Animations ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Desktop breakpoint ── */
+    @media (min-width: 540px) {
+      .hero h1 { font-size: 23px; }
+      .mode-tab { font-size: 13px; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SVG Icon Sprite ── -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+  </symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+  </symbol>
+  <symbol id="i-draw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+  </symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+  </symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/>
+  </symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </symbol>
+  <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+  </symbol>
+  <symbol id="i-eraser" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 20H7L3 16l9.5-9.5 7.5 7.5-4 4"/><path d="M6 15l3 3"/>
+  </symbol>
+  <symbol id="i-shutter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="white" stroke="none"/>
+  </symbol>
+</svg>
+
+<!-- Matador SVG logo snippet (reused inline) -->
+<template id="logo-paths">
+  <path d="M141.1,3.8c-0.8-1.1-2.1-2.2-6.3-2.7h-19.2l-3.8,6.3h4.5V25l6.5,4.5c0,0,11.8-3.4,16.9-11.4C140.4,16.9,145.4,9.5,141.1,3.8 M124,22.2v-5.8V11c0,0,0.2-1.2-2.9-2.4c-0.4,0-1-0.5-1.1-1.3h12.3c0,0,2.6-0.1,2.5,3.4C134.8,11.5,134.1,17.3,124,22.2"/>
+  <path d="M171.8,10.9c-1-2.7-2.9-6.2-6.5-10.4l-5.9,4.9l-6-4.4c0,0-6.8,5.1-9.4,11.9c-0.7,1.9-1.5,8.8,3.8,12.7c0.6,0.5,4.7,5.2,14.3,3.7c1.2-0.2,10.2-3.9,10.7-12.3C172.8,16.4,173,14.3,171.8,10.9 M164.4,19c-1.5,5-6.3,4.5-7.6,4.2c-4.3-0.9-5.1-5.2-4.8-6.5c1.4-5.5,7-9,7-9c1.7,1.5,2.9,2.8,3.7,4.1C165.4,15.6,164.7,18,164.4,19"/>
+  <path d="M109.8,15.4l-3.1-10.6l-6.5-4.1l-8,14.5c0,0-0.7,0.2-3-2.4c-0.4,0.5-2.5,4.5-2.5,4.5s1,0.9,3.1,2.4c-0.2,0.4-3,5.8-3,5.8l6.2,4l4.2-7.3c0,0,3.5,0.8,6.8,0.3c0.2,0.5,1.9,7.1,1.9,7.1l6.8-4.1L109.8,15.4z M99.1,18.6l2.7-4.6c0,0,0.2,0.9,0.5,2c0.3,1.2,0.7,2.6,0.9,3.1C101,19.5,99.1,18.6,99.1,18.6"/>
+  <path d="M62,15.4L58.9,4.8l-6.5-4.1l-8,14.5c0,0-0.7,0.2-3-2.4c-0.4,0.5-2.5,4.5-2.5,4.5s1,0.9,3.1,2.4c-0.2,0.4-3,5.8-3,5.8l6.2,4l4.2-7.3c0,0,3.5,0.8,6.8,0.3c0.2,0.5,1.9,7.1,1.9,7.1l6.8-4.1L62,15.4z M51.3,18.6L54,14c0,0,0.2,0.9,0.5,2c0.3,1.2,0.7,2.6,0.9,3.1C53.3,19.5,51.3,18.6,51.3,18.6"/>
+  <polygon points="30.2,27 27.7,16.7 21.9,26.4 17.6,23.6 15.6,16.4 7.6,29.3 1.3,24.9 14.6,0.8 20.6,4.5 22.3,10.2 28.3,0.7 33.4,4 38,29.5"/>
+  <polygon points="80.4,29.5 73.1,25.6 73.1,7.4 63.5,7.4 66.9,0.9 91.4,0.9 87.8,7.4 76.3,7.4 80.4,10.8"/>
+  <path d="M196.5,18.2c0.8-0.8,3.4-2,5.8-5.6c0.7-1,2.6-6,0.2-9c-0.8-1-1.6-2.3-4.6-2.9h-22l-4.1,6.5h7.5v18.1l7.9,4.3v-9.1h3.1c0,0,3.8,1.2,4.2,8.8h8.7C203.1,29.2,203.1,21.4,196.5,18.2 M187.1,14.5v-2.2v-2.2c0,0,0.2-0.6-1.7-1.5c-0.8-0.4-1.6-0.9-1.6-1.7h10c0,0,1.9-0.1,2,1.8C195.8,9.1,195.5,13.6,187.1,14.5"/>
+</template>
+
+<!-- ── App ── -->
+<header class="header">
+  <div class="header-logo">
+    <svg viewBox="0 0 205 30" aria-label="Matador">
+      <g fill="#fff">
+        <path d="M141.1,3.8c-0.8-1.1-2.1-2.2-6.3-2.7h-19.2l-3.8,6.3h4.5V25l6.5,4.5c0,0,11.8-3.4,16.9-11.4C140.4,16.9,145.4,9.5,141.1,3.8 M124,22.2v-5.8V11c0,0,0.2-1.2-2.9-2.4c-0.4,0-1-0.5-1.1-1.3h12.3c0,0,2.6-0.1,2.5,3.4C134.8,11.5,134.1,17.3,124,22.2"/>
+        <path d="M171.8,10.9c-1-2.7-2.9-6.2-6.5-10.4l-5.9,4.9l-6-4.4c0,0-6.8,5.1-9.4,11.9c-0.7,1.9-1.5,8.8,3.8,12.7c0.6,0.5,4.7,5.2,14.3,3.7c1.2-0.2,10.2-3.9,10.7-12.3C172.8,16.4,173,14.3,171.8,10.9 M164.4,19c-1.5,5-6.3,4.5-7.6,4.2c-4.3-0.9-5.1-5.2-4.8-6.5c1.4-5.5,7-9,7-9c1.7,1.5,2.9,2.8,3.7,4.1C165.4,15.6,164.7,18,164.4,19"/>
+        <path d="M109.8,15.4l-3.1-10.6l-6.5-4.1l-8,14.5c0,0-0.7,0.2-3-2.4c-0.4,0.5-2.5,4.5-2.5,4.5s1,0.9,3.1,2.4c-0.2,0.4-3,5.8-3,5.8l6.2,4l4.2-7.3c0,0,3.5,0.8,6.8,0.3c0.2,0.5,1.9,7.1,1.9,7.1l6.8-4.1L109.8,15.4z M99.1,18.6l2.7-4.6c0,0,0.2,0.9,0.5,2c0.3,1.2,0.7,2.6,0.9,3.1C101,19.5,99.1,18.6,99.1,18.6"/>
+        <path d="M62,15.4L58.9,4.8l-6.5-4.1l-8,14.5c0,0-0.7,0.2-3-2.4c-0.4,0.5-2.5,4.5-2.5,4.5s1,0.9,3.1,2.4c-0.2,0.4-3,5.8-3,5.8l6.2,4l4.2-7.3c0,0,3.5,0.8,6.8,0.3c0.2,0.5,1.9,7.1,1.9,7.1l6.8-4.1L62,15.4z M51.3,18.6L54,14c0,0,0.2,0.9,0.5,2c0.3,1.2,0.7,2.6,0.9,3.1C53.3,19.5,51.3,18.6,51.3,18.6"/>
+        <polygon points="30.2,27 27.7,16.7 21.9,26.4 17.6,23.6 15.6,16.4 7.6,29.3 1.3,24.9 14.6,0.8 20.6,4.5 22.3,10.2 28.3,0.7 33.4,4 38,29.5"/>
+        <polygon points="80.4,29.5 73.1,25.6 73.1,7.4 63.5,7.4 66.9,0.9 91.4,0.9 87.8,7.4 76.3,7.4 80.4,10.8"/>
+        <path d="M196.5,18.2c0.8-0.8,3.4-2,5.8-5.6c0.7-1,2.6-6,0.2-9c-0.8-1-1.6-2.3-4.6-2.9h-22l-4.1,6.5h7.5v18.1l7.9,4.3v-9.1h3.1c0,0,3.8,1.2,4.2,8.8h8.7C203.1,29.2,203.1,21.4,196.5,18.2 M187.1,14.5v-2.2v-2.2c0,0,0.2-0.6-1.7-1.5c-0.8-0.4-1.6-0.9-1.6-1.7h10c0,0,1.9-0.1,2,1.8C195.8,9.1,195.5,13.6,187.1,14.5"/>
+      </g>
+    </svg>
+  </div>
+  <span class="header-tag">Stationery</span>
+</header>
+
+<main class="main">
+  <div class="content-wrap">
+
+    <!-- Hero -->
+    <section class="hero">
+      <p class="eyebrow">Doodle Oracle</p>
+      <h1>What does your boredom art say about you?</h1>
+      <p>Upload a photo, snap one live, or draw here. Our AI reads the personality behind every pen stroke.</p>
+    </section>
+
+    <!-- ── Input Phase ── -->
+    <div id="input-phase">
+
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="upload" id="tab-upload">
+          <svg><use href="#i-upload"/></svg> Upload
+        </button>
+        <button class="mode-tab" data-mode="camera" id="tab-camera">
+          <svg><use href="#i-camera"/></svg> Camera
+        </button>
+        <button class="mode-tab" data-mode="draw" id="tab-draw">
+          <svg><use href="#i-draw"/></svg> Draw
+        </button>
+      </div>
+
+      <!-- Upload zone -->
+      <div class="zone active" id="zone-upload">
+        <input type="file" id="file-input" accept="image/*" style="display:none">
+        <div class="drop-zone" id="upload-dropzone" role="button" tabindex="0">
+          <div class="drop-icon">
+            <svg width="20" height="20"><use href="#i-upload"/></svg>
+          </div>
+          <p class="drop-title">Drop your doodle here</p>
+          <p class="drop-sub">or tap to browse — photo library, files, downloads</p>
+        </div>
+        <div class="preview-wrap hidden" id="upload-preview">
+          <img id="upload-img" alt="Your doodle">
+          <button class="btn-overlay" id="upload-remove-btn">
+            <svg><use href="#i-x"/></svg> Remove
+          </button>
+        </div>
+      </div>
+
+      <!-- Camera zone -->
+      <div class="zone" id="zone-camera">
+
+        <div id="cam-placeholder" class="drop-zone" role="button" tabindex="0">
+          <div class="drop-icon">
+            <svg width="20" height="20"><use href="#i-camera"/></svg>
+          </div>
+          <p class="drop-title">Open camera</p>
+          <p class="drop-sub">Tap to use your camera live — or use "Upload" to pick from your gallery</p>
+        </div>
+
+        <div class="hidden" id="cam-live">
+          <div class="preview-wrap">
+            <video id="cam-video" autoplay playsinline muted></video>
+          </div>
+          <div class="cam-controls">
+            <button class="btn-capture" id="cam-capture-btn">
+              <svg><use href="#i-shutter"/></svg> Capture
+            </button>
+            <button class="btn-cancel" id="cam-cancel-btn">Cancel</button>
+          </div>
+        </div>
+
+        <div class="hidden" id="cam-fallback">
+          <input type="file" id="cam-native-input" accept="image/*" capture="environment" style="display:none">
+          <div class="drop-zone" id="cam-fallback-zone" role="button" tabindex="0">
+            <div class="drop-icon">
+              <svg width="20" height="20"><use href="#i-camera"/></svg>
+            </div>
+            <p class="drop-title">Open camera app</p>
+            <p class="drop-sub">Tap to take a photo with your device camera</p>
+          </div>
+        </div>
+
+        <div class="hidden" id="cam-captured">
+          <div class="preview-wrap">
+            <img id="cam-img" alt="Captured photo">
+            <button class="btn-overlay" id="cam-retake-btn">
+              <svg><use href="#i-x"/></svg> Retake
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Draw zone -->
+      <div class="zone" id="zone-draw">
+        <div class="canvas-wrap">
+          <div class="canvas-toolbar">
+            <span class="toolbar-label">Size</span>
+            <button class="pen-btn active" data-size="2" id="pen-sm">
+              <span class="pen-dot" style="width:3px;height:3px"></span>
+            </button>
+            <button class="pen-btn" data-size="4" id="pen-md">
+              <span class="pen-dot" style="width:5px;height:5px"></span>
+            </button>
+            <button class="pen-btn" data-size="8" id="pen-lg">
+              <span class="pen-dot" style="width:9px;height:9px"></span>
+            </button>
+            <div class="toolbar-sep"></div>
+            <button class="eraser-btn" id="eraser-btn">
+              <svg><use href="#i-eraser"/></svg> Eraser
+            </button>
+            <button class="clear-btn hidden" id="clear-btn">Clear</button>
+          </div>
+          <canvas id="draw-canvas" width="800" height="450"></canvas>
+        </div>
+        <p class="draw-hint" id="hint-start">Draw anything — a bear, flames, a star, spirals, whatever comes naturally</p>
+        <p class="draw-hint hidden" id="hint-done">Looking good — tap "Read my doodle" when you're ready</p>
+      </div>
+
+      <!-- Error -->
+      <div class="error-msg hidden" id="error-msg"></div>
+
+      <!-- CTA -->
+      <button class="btn-analyze" id="analyze-btn" disabled>
+        Read my doodle
+        <svg><use href="#i-arrow"/></svg>
+      </button>
+
+    </div>
+
+    <!-- ── Loading Phase ── -->
+    <div class="loading-phase hidden" id="loading-phase">
+      <div class="spinner"></div>
+      <p class="loading-msg" id="loading-msg">Reading your subconscious...</p>
+    </div>
+
+    <!-- ── Result Phase ── -->
+    <div class="result-phase hidden" id="result-phase">
+      <div class="result-card" id="result-card">
+        <div class="result-img-wrap" id="result-img-wrap">
+          <img id="result-img" alt="Your doodle">
+        </div>
+        <div class="result-body">
+          <p class="result-spotted" id="r-spotted"></p>
+          <h2 class="result-archetype" id="r-archetype"></h2>
+          <div class="result-vibes" id="r-vibes"></div>
+          <p class="result-reading" id="r-reading"></p>
+          <div class="result-bonus" id="r-bonus">
+            <p class="result-bonus-label" id="r-bonus-label">Secret insight</p>
+            <p class="result-bonus-text" id="r-bonus-text"></p>
+          </div>
+        </div>
+      </div>
+      <div class="result-footer">
+        <button class="btn-try-again" id="try-again-btn">
+          <svg><use href="#i-refresh"/></svg> Try another
+        </button>
+        <span class="brand-stamp">Matador Stationery</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── Constants ──────────────────────────────────────────
+const MSGS = [
+  'Reading your subconscious...',
+  'Consulting the doodle spirits...',
+  'Decoding your inner world...',
+  'Interpreting your creative energy...',
+];
+
+const PAL = {
+  warm:     { bg:'#FDF6EE', bd:'#E8C278', ac:'#9E5E10', tx:'#462A06', tg:'#F5DFA0' },
+  cool:     { bg:'#EEF4FB', bd:'#88BAE8', ac:'#154F96', tx:'#082A58', tg:'#C2D8F8' },
+  nature:   { bg:'#F0F8E8', bd:'#90CC60', ac:'#265A0C', tx:'#113002', tg:'#CCE8A0' },
+  electric: { bg:'#F0F0FE', bd:'#A8A8EC', ac:'#3030A8', tx:'#181460', tg:'#CCCCF8' },
+  dreamy:   { bg:'#FCF0F6', bd:'#ECA0C4', ac:'#881E4C', tx:'#480A28', tg:'#F4C0DA' },
+};
+
+// ── State ──────────────────────────────────────────────
+let mode          = 'upload';
+let imageData     = null;   // { base64, mediaType }
+let preview       = null;   // data URL
+let drawn         = false;
+let penSize       = 2;
+let erasing       = false;
+let camState      = 'placeholder'; // placeholder | live | fallback | captured
+let camStream     = null;
+let drawCtx       = null;
+let cvsPainting   = false;
+let canvasInited  = false;
+let loadInterval  = null;
+let msgIdx        = 0;
+
+// ── Boot ───────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  bindEvents();
+  initCanvas();
+});
+
+// ── Event bindings ─────────────────────────────────────
+function bindEvents() {
+  // Mode tabs
+  document.querySelectorAll('.mode-tab').forEach(btn => {
+    btn.addEventListener('click', () => switchMode(btn.dataset.mode));
+  });
+
+  // Upload
+  const dz = document.getElementById('upload-dropzone');
+  const fi = document.getElementById('file-input');
+  dz.addEventListener('click', () => fi.click());
+  dz.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fi.click(); });
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+  fi.addEventListener('change', e => { handleFile(e.target.files[0]); fi.value = ''; });
+  document.getElementById('upload-remove-btn').addEventListener('click', clearUpload);
+
+  // Camera
+  document.getElementById('cam-placeholder').addEventListener('click', startCamera);
+  document.getElementById('cam-capture-btn').addEventListener('click', capturePhoto);
+  document.getElementById('cam-cancel-btn').addEventListener('click', stopCamera);
+  document.getElementById('cam-fallback-zone').addEventListener('click', () => document.getElementById('cam-native-input').click());
+  document.getElementById('cam-native-input').addEventListener('change', e => { handleNativeCamera(e.target.files[0]); e.target.value = ''; });
+  document.getElementById('cam-retake-btn').addEventListener('click', clearCamera);
+
+  // Draw
+  document.querySelectorAll('.pen-btn').forEach(btn => {
+    btn.addEventListener('click', () => selectPen(parseInt(btn.dataset.size), btn));
+  });
+  document.getElementById('eraser-btn').addEventListener('click', toggleEraser);
+  document.getElementById('clear-btn').addEventListener('click', clearCanvas);
+
+  // Analyze & Reset
+  document.getElementById('analyze-btn').addEventListener('click', analyze);
+  document.getElementById('try-again-btn').addEventListener('click', reset);
+}
+
+// ── Mode switching ─────────────────────────────────────
+function switchMode(next) {
+  if (next === mode) return;
+  if (mode === 'camera') stopCamStream();
+  mode = next;
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === next));
+  document.querySelectorAll('.zone').forEach(z => z.classList.remove('active'));
+  document.getElementById('zone-' + next).classList.add('active');
+  if (next === 'camera') { camState = 'placeholder'; renderCameraUI(); }
+  if (next === 'draw') setTimeout(initCanvas, 50);
+  refreshBtn();
+}
+
+// ── File upload ────────────────────────────────────────
+function handleFile(file) {
+  if (!file || !file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    resizeDataUrl(e.target.result, 1200, 0.88).then(url => {
+      imageData = { base64: url.split(',')[1], mediaType: 'image/jpeg' };
+      preview   = url;
+      document.getElementById('upload-img').src = url;
+      document.getElementById('upload-dropzone').classList.add('hidden');
+      document.getElementById('upload-preview').classList.remove('hidden');
+      refreshBtn();
+    });
+  };
+  reader.readAsDataURL(file);
+}
+function clearUpload() {
+  imageData = null; preview = null;
+  document.getElementById('upload-dropzone').classList.remove('hidden');
+  document.getElementById('upload-preview').classList.add('hidden');
+  refreshBtn();
+}
+
+// ── Camera ─────────────────────────────────────────────
+async function startCamera() {
+  if (!navigator.mediaDevices?.getUserMedia) { camState = 'fallback'; renderCameraUI(); return; }
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 } } });
+    const vid = document.getElementById('cam-video');
+    vid.srcObject = camStream;
+    await vid.play();
+    camState = 'live';
+    renderCameraUI();
+  } catch (err) {
+    console.warn('Camera error:', err);
+    camState = 'fallback';
+    renderCameraUI();
+  }
+}
+function capturePhoto() {
+  const vid = document.getElementById('cam-video');
+  const cvs = Object.assign(document.createElement('canvas'), { width: vid.videoWidth || 640, height: vid.videoHeight || 480 });
+  cvs.getContext('2d').drawImage(vid, 0, 0);
+  stopCamStream();
+  const url = cvs.toDataURL('image/jpeg', 0.88);
+  imageData = { base64: url.split(',')[1], mediaType: 'image/jpeg' };
+  preview   = url;
+  document.getElementById('cam-img').src = url;
+  camState  = 'captured';
+  renderCameraUI();
+  refreshBtn();
+}
+function stopCamera() { stopCamStream(); camState = 'placeholder'; renderCameraUI(); }
+function stopCamStream() {
+  camStream?.getTracks().forEach(t => t.stop());
+  camStream = null;
+  const vid = document.getElementById('cam-video');
+  if (vid) vid.srcObject = null;
+}
+function clearCamera() {
+  imageData = null; preview = null;
+  camState  = 'placeholder';
+  renderCameraUI();
+  refreshBtn();
+}
+function handleNativeCamera(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const url = e.target.result;
+    imageData = { base64: url.split(',')[1], mediaType: file.type || 'image/jpeg' };
+    preview   = url;
+    document.getElementById('cam-img').src = url;
+    camState  = 'captured';
+    renderCameraUI();
+    refreshBtn();
+  };
+  reader.readAsDataURL(file);
+}
+function renderCameraUI() {
+  ['placeholder','live','fallback','captured'].forEach(s => {
+    document.getElementById('cam-' + s).classList.toggle('hidden', s !== camState);
+  });
+}
+
+// ── Canvas draw ────────────────────────────────────────
+function initCanvas() {
+  const cvs = document.getElementById('draw-canvas');
+  if (!cvs) return;
+  drawCtx = cvs.getContext('2d');
+  if (!canvasInited) {
+    drawCtx.fillStyle = '#fff';
+    drawCtx.fillRect(0, 0, cvs.width, cvs.height);
+    cvs.addEventListener('mousedown',  onDwn);
+    cvs.addEventListener('mousemove',  onMov);
+    cvs.addEventListener('mouseup',    onUp);
+    cvs.addEventListener('mouseleave', onUp);
+    cvs.addEventListener('touchstart', onDwn, { passive: false });
+    cvs.addEventListener('touchmove',  onMov, { passive: false });
+    cvs.addEventListener('touchend',   onUp);
+    canvasInited = true;
+  }
+}
+function cvsPos(e) {
+  const cvs = document.getElementById('draw-canvas');
+  const r   = cvs.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: (src.clientX - r.left) * cvs.width / r.width, y: (src.clientY - r.top) * cvs.height / r.height };
+}
+function applyCtx() {
+  drawCtx.strokeStyle = drawCtx.fillStyle = erasing ? '#fff' : '#1C1C1A';
+  drawCtx.lineWidth   = erasing ? penSize * 6 : penSize;
+  drawCtx.lineCap = drawCtx.lineJoin = 'round';
+}
+function onDwn(e) {
+  e.preventDefault();
+  cvsPainting = true;
+  applyCtx();
+  const p = cvsPos(e);
+  drawCtx.beginPath();
+  drawCtx.arc(p.x, p.y, erasing ? penSize * 3 : Math.max(penSize * 0.5, 1), 0, Math.PI * 2);
+  drawCtx.fill();
+  drawCtx.beginPath();
+  drawCtx.moveTo(p.x, p.y);
+  if (!erasing && !drawn) {
+    drawn = true;
+    document.getElementById('hint-start').classList.add('hidden');
+    document.getElementById('hint-done').classList.remove('hidden');
+    document.getElementById('clear-btn').classList.remove('hidden');
+    refreshBtn();
+  }
+}
+function onMov(e) {
+  e.preventDefault();
+  if (!cvsPainting) return;
+  applyCtx();
+  const p = cvsPos(e);
+  drawCtx.lineTo(p.x, p.y);
+  drawCtx.stroke();
+  drawCtx.beginPath();
+  drawCtx.moveTo(p.x, p.y);
+}
+function onUp() { cvsPainting = false; }
+
+function selectPen(size, btn) {
+  penSize  = size;
+  erasing  = false;
+  document.querySelectorAll('.pen-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('eraser-btn').classList.remove('active');
+  document.getElementById('draw-canvas').style.cursor = 'crosshair';
+}
+function toggleEraser() {
+  erasing = !erasing;
+  document.getElementById('eraser-btn').classList.toggle('active', erasing);
+  document.querySelectorAll('.pen-btn').forEach(b => b.classList.remove('active'));
+  if (!erasing) document.querySelector(`.pen-btn[data-size="${penSize}"]`)?.classList.add('active');
+  document.getElementById('draw-canvas').style.cursor = erasing ? 'cell' : 'crosshair';
+}
+function clearCanvas() {
+  const cvs = document.getElementById('draw-canvas');
+  drawCtx.fillStyle = '#fff';
+  drawCtx.fillRect(0, 0, cvs.width, cvs.height);
+  drawn   = false;
+  erasing = false;
+  document.getElementById('eraser-btn').classList.remove('active');
+  document.getElementById('pen-sm').classList.add('active');
+  document.getElementById('clear-btn').classList.add('hidden');
+  document.getElementById('hint-start').classList.remove('hidden');
+  document.getElementById('hint-done').classList.add('hidden');
+  document.getElementById('draw-canvas').style.cursor = 'crosshair';
+  refreshBtn();
+}
+
+// ── Analyze button state ───────────────────────────────
+function refreshBtn() {
+  const ready = (mode === 'upload' || mode === 'camera') ? !!imageData : drawn;
+  const btn   = document.getElementById('analyze-btn');
+  btn.classList.toggle('ready', ready);
+  btn.disabled = !ready;
+}
+
+// ── Image resize utility ───────────────────────────────
+function resizeDataUrl(dataUrl, maxDim, quality) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        const r = Math.min(maxDim / w, maxDim / h);
+        w = Math.round(w * r); h = Math.round(h * r);
+      }
+      const cvs = Object.assign(document.createElement('canvas'), { width: w, height: h });
+      cvs.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(cvs.toDataURL('image/jpeg', quality));
+    };
+    img.src = dataUrl;
+  });
+}
+
+// ── Analyze ────────────────────────────────────────────
+async function analyze() {
+  let b64, mt, pv;
+  if (mode === 'draw') {
+    pv  = document.getElementById('draw-canvas').toDataURL('image/png');
+    b64 = pv.split(',')[1]; mt = 'image/png';
+  } else {
+    if (!imageData) return;
+    b64 = imageData.base64; mt = imageData.mediaType; pv = preview;
+  }
+
+  // Switch to loading
+  ['input-phase','result-phase'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById('loading-phase').classList.remove('hidden');
+  msgIdx = 0;
+  document.getElementById('loading-msg').textContent = MSGS[0];
+  loadInterval = setInterval(() => { msgIdx = (msgIdx + 1) % MSGS.length; document.getElementById('loading-msg').textContent = MSGS[msgIdx]; }, 1800);
+
+  const SYSTEM_PROMPT = `You are a warm, witty doodle personality reader. When shown any doodle, sketch, or photo — no matter how rough or simple — identify what's drawn and give a fun, casual, always-positive personality reading. Speak like a charming friend who notices things others miss.
+
+Return ONLY a valid JSON object — no markdown, no backticks, nothing else:
+{
+  "spotted": "One casual sentence about what you see",
+  "archetype": "A fun 2–4 word personality archetype, e.g. The Quiet Visionary",
+  "vibes": ["word1", "word2", "word3"],
+  "reading": "2–3 sentences of warm, insightful personality description",
+  "bonus": "One secret extra observation — a hidden trait or playful prediction",
+  "color_mood": "exactly one of: warm, cool, nature, electric, dreamy"
+}`;
+
+  try {
+    // Calls our Netlify Function — API key stays server-side, never exposed
+    const res = await fetch('/.netlify/functions/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+        contents: [{
+          role: 'user',
+          parts: [
+            { inline_data: { mime_type: mt, data: b64 } },
+            { text: "Here's my doodle! What does it say about my personality?" }
+          ]
+        }],
+        generationConfig: { temperature: 0.9, maxOutputTokens: 800 }
+      })
+    });
+
+    clearInterval(loadInterval);
+
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      const msg = e.error?.message || `Error ${res.status}`;
+      if (res.status === 429) throw new Error('Rate limit reached. Wait a moment and try again.');
+      throw new Error(msg);
+    }
+
+    const data = await res.json();
+    if (data.promptFeedback?.blockReason) throw new Error('Blocked by safety filters. Try a different image.');
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    if (!text) throw new Error('Empty response — try again');
+    const m = text.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('Could not parse response. Try again.');
+    showResult(JSON.parse(m[0]), pv);
+
+  } catch (err) {
+    clearInterval(loadInterval);
+    console.error(err);
+    document.getElementById('loading-phase').classList.add('hidden');
+    document.getElementById('input-phase').classList.remove('hidden');
+    showError(err.message || 'Something went wrong. Try again.');
+  }
+}
+
+// ── Show result ────────────────────────────────────────
+function showResult(r, imgUrl) {
+  const pal = PAL[r.color_mood] || PAL.cool;
+  const card = document.getElementById('result-card');
+  card.style.background = pal.bg;
+  card.style.border     = `1px solid ${pal.bd}`;
+
+  // Image
+  const imgWrap = document.getElementById('result-img-wrap');
+  const img     = document.getElementById('result-img');
+  if (imgUrl) {
+    img.src               = imgUrl;
+    img.style.border      = `1px solid ${pal.bd}`;
+    imgWrap.style.display = 'block';
+  } else {
+    imgWrap.style.display = 'none';
+  }
+
+  // Text
+  const setTx = (id, val, extra) => {
+    const el = document.getElementById(id);
+    el.textContent = val || '';
+    if (extra) Object.assign(el.style, extra);
+  };
+  setTx('r-spotted',   r.spotted,  { color: pal.tx });
+  setTx('r-archetype', r.archetype,{ color: pal.tx });
+  setTx('r-reading',   r.reading,  { color: pal.tx });
+  setTx('r-bonus-label', 'Secret insight', { color: pal.ac });
+  setTx('r-bonus-text',  r.bonus,  { color: pal.tx });
+
+  const bonusEl = document.getElementById('r-bonus');
+  bonusEl.style.background = 'rgba(255,255,255,0.6)';
+  bonusEl.style.border     = `1px solid ${pal.bd}`;
+
+  // Vibes
+  const vibesEl = document.getElementById('r-vibes');
+  vibesEl.innerHTML = '';
+  (r.vibes || []).forEach(v => {
+    const s = document.createElement('span');
+    s.className   = 'result-vibe';
+    s.textContent = v;
+    s.style.background = pal.tg;
+    s.style.color      = pal.ac;
+    vibesEl.appendChild(s);
+  });
+
+  document.getElementById('loading-phase').classList.add('hidden');
+  document.getElementById('result-phase').classList.remove('hidden');
+}
+
+// ── Error ──────────────────────────────────────────────
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 7000);
+}
+
+// ── Reset ──────────────────────────────────────────────
+function reset() {
+  imageData = null; preview = null;
+  // Upload
+  document.getElementById('upload-dropzone').classList.remove('hidden');
+  document.getElementById('upload-preview').classList.add('hidden');
+  // Camera
+  stopCamStream();
+  camState = 'placeholder'; renderCameraUI();
+  // Draw — keep canvas content, just update button state
+  // Phases
+  document.getElementById('result-phase').classList.add('hidden');
+  document.getElementById('input-phase').classList.remove('hidden');
+  refreshBtn();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
