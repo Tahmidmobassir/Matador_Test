@@ -998,10 +998,10 @@ Return ONLY a valid JSON object — no markdown, no backticks, nothing else:
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
         contents: [{
           role: 'user',
           parts: [
+            { text: SYSTEM_PROMPT },
             { inline_data: { mime_type: mt, data: b64 } },
             { text: "Here's my doodle! What does it say about my personality?" }
           ]
