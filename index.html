@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     :root {
       --red:       #C8202A;
@@ -86,7 +87,7 @@
 
     /* ── Hero ── */
     .hero {
-      padding: 32px 0 28px;
+      padding: 24px 0 12px;
       position: relative;
       overflow: hidden;
     }
@@ -143,7 +144,7 @@
       background: var(--surf-2);
       border-radius: 8px;
       padding: 3px;
-      margin: 22px 0 18px;
+      margin: 12px 0 14px;
       gap: 2px;
     }
     .mode-tab {
@@ -486,13 +487,44 @@
     .btn-lang.bn-active { background: var(--red); border-color: var(--red); color: #fff; }
     .btn-lang:disabled { opacity: 0.5; cursor: not-allowed; }
 
+    /* ── Share bar ── */
+    .share-bar { margin-top: 14px; display: flex; flex-direction: column; gap: 9px; }
+    .btn-save {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      width: 100%; padding: 13px; border-radius: 10px; border: none;
+      background: var(--text); color: #fff;
+      font-family: var(--font); font-size: 14px; font-weight: 500; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-save:hover { background: #333; }
+    .btn-save svg { width: 16px; height: 16px; }
+    .share-social { display: flex; gap: 9px; }
+    .btn-soc {
+      flex: 1; padding: 11px 8px; border-radius: 10px; border: none;
+      font-family: var(--font); font-size: 13px; font-weight: 500;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: opacity 0.15s;
+    }
+    .btn-soc:hover { opacity: 0.88; }
+    .btn-soc:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-soc svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .btn-fb { background: #1877F2; color: #fff; }
+    .btn-ig { background: linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888); color: #fff; }
+
+    /* ── Info toast (for Instagram desktop fallback) ── */
+    .info-msg {
+      margin-top: 10px; padding: 11px 14px;
+      background: #F0F7EE; border: 1px solid #B8DFB2;
+      border-radius: 8px; font-size: 13px; color: #2D6010;
+    }
+
     /* ── Zone divider ── */
     .zone-divider {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 20px 0 0;
-      padding-bottom: 4px;
+      margin: 8px 0 0;
+      padding-bottom: 0;
     }
     .zone-divider-line { flex: 1; height: 1px; background: var(--border-lt); }
     .zone-divider-icon { color: var(--red); opacity: 0.4; flex-shrink: 0; }
@@ -594,6 +626,15 @@
   </symbol>
   <symbol id="i-shutter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="white" stroke="none"/>
+  </symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+  </symbol>
+  <symbol id="i-fb" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+  </symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
   </symbol>
 </svg>
 
@@ -821,6 +862,22 @@
           </div>
         </div>
       </div>
+        <!-- Share / Download bar -->
+        <div class="share-bar">
+          <button class="btn-save" id="btn-save">
+            <svg><use href="#i-dl"/></svg> Save as image
+          </button>
+          <div class="share-social">
+            <button class="btn-soc btn-fb" id="btn-fb">
+              <svg><use href="#i-fb"/></svg> Facebook
+            </button>
+            <button class="btn-soc btn-ig" id="btn-ig">
+              <svg><use href="#i-ig"/></svg> Instagram
+            </button>
+          </div>
+        </div>
+        <div class="info-msg hidden" id="info-msg"></div>
+
       <div class="result-footer">
         <button class="btn-try-again" id="try-again-btn">
           <svg><use href="#i-refresh"/></svg> Try another
@@ -907,10 +964,13 @@ function bindEvents() {
   document.getElementById('eraser-btn').addEventListener('click', toggleEraser);
   document.getElementById('clear-btn').addEventListener('click', clearCanvas);
 
-  // Analyze & Reset & Language
+  // Analyze & Reset & Language & Share
   document.getElementById('analyze-btn').addEventListener('click', analyze);
   document.getElementById('try-again-btn').addEventListener('click', reset);
   document.getElementById('lang-btn').addEventListener('click', toggleLanguage);
+  document.getElementById('btn-save').addEventListener('click', downloadCard);
+  document.getElementById('btn-fb').addEventListener('click', shareToFacebook);
+  document.getElementById('btn-ig').addEventListener('click', shareToInstagram);
 }
 
 // ── Mode switching ─────────────────────────────────────
@@ -1357,6 +1417,77 @@ function applyResultText(r) {
     s.style.color      = pal.ac;
     vibesEl.appendChild(s);
   });
+}// ── Download & Share ───────────────────────────────────
+async function captureCard() {
+  const card = document.getElementById('result-card');
+  const pal  = enResult ? (PAL[enResult.color_mood] || PAL.cool) : PAL.cool;
+  return await html2canvas(card, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: pal.bg,
+    logging: false
+  });
+}
+
+async function downloadCard() {
+  const btn = document.getElementById('btn-save');
+  btn.textContent = 'Generating…';
+  btn.disabled = true;
+  try {
+    const canvas = await captureCard();
+    const a = document.createElement('a');
+    a.download = 'doodle-reading.jpg';
+    a.href = canvas.toDataURL('image/jpeg', 0.92);
+    a.click();
+  } catch (e) { console.error(e); }
+  btn.innerHTML = '<svg><use href="#i-dl"/></svg> Save as image';
+  btn.disabled = false;
+}
+
+function shareToFacebook() {
+  const url  = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent(`My doodle says I'm "${enResult?.archetype}" — find out what yours says! 🎨`);
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank', 'width=580,height=400');
+}
+
+async function shareToInstagram() {
+  const btn = document.getElementById('btn-ig');
+  btn.textContent = 'Preparing…';
+  btn.disabled = true;
+
+  try {
+    const canvas = await captureCard();
+    const blob   = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.92));
+    const file   = new File([blob], 'doodle-reading.jpg', { type: 'image/jpeg' });
+
+    // Mobile: use native share sheet (shows Instagram in the list)
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: 'My Doodle Reading',
+        text: `I'm "${enResult?.archetype}" — find out what your doodle says! 🎨`
+      });
+    } else {
+      // Desktop / unsupported: download and show instruction
+      const a = document.createElement('a');
+      a.download = 'doodle-reading.jpg';
+      a.href = canvas.toDataURL('image/jpeg', 0.92);
+      a.click();
+      showInfo('Image saved! Open Instagram and share it from your gallery or stories.');
+    }
+  } catch (e) {
+    if (e.name !== 'AbortError') console.error(e);
+  }
+
+  btn.innerHTML = '<svg><use href="#i-ig"/></svg> Instagram';
+  btn.disabled = false;
+}
+
+function showInfo(msg) {
+  const el = document.getElementById('info-msg');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 6000);
 }
 </script>
 
