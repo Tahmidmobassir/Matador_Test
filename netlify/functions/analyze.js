@@ -3,7 +3,7 @@
 // Free tier: 14,400 requests/day · Get a free key at console.groq.com
 // Set GROQ_API_KEY in: Netlify Dashboard → Site → Environment Variables
 
-const MODEL = 'llama-3.2-11b-vision-preview';
+const MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct'; // Llama 4 Scout — free, vision-capable
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
